@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>100 Days Delivery Challenge</title>
+
+  <style>
+    body{
+      margin:0;
+      font-family: Arial, sans-serif;
+      background:#0b0f14;
+      color:#fff;
+    }
+
+    header{
+      padding:16px;
+      background:#111827;
+      position:sticky;
+      top:0;
+      z-index:10;
+      border-bottom:1px solid #1f2937;
+    }
+
+    h1{
+      margin:0;
+      font-size:18px;
+    }
+
+    .container{
+      padding:16px;
+      max-width:1100px;
+      margin:auto;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:14px;
+    }
+
+    @media(min-width:900px){
+      .grid{
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .card{
+      background:#111827;
+      border:1px solid #1f2937;
+      border-radius:16px;
+      padding:16px;
+      box-shadow:0 6px 18px rgba(0,0,0,0.3);
+    }
+
+    .row{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .stat{
+      flex:1;
+      min-width:140px;
+      background:#0b1220;
+      border:1px solid #1f2937;
+      padding:12px;
+      border-radius:14px;
+    }
+
+    .stat h3{
+      margin:0;
+      font-size:12px;
+      opacity:0.7;
+      font-weight:600;
+    }
+
+    .stat p{
+      margin:6px 0 0;
+      font-size:20px;
+      font-weight:700;
+    }
+
+    label{
+      font-size:13px;
+      opacity:0.8;
+    }
+
+    input, textarea, select{
+      width:100%;
+      margin-top:6px;
+      padding:10px;
+      border-radius:12px;
+      border:1px solid #1f2937;
+      background:#0b1220;
+      color:#fff;
+      outline:none;
+      font-size:14px;
+    }
+
+    textarea{
+      min-height:90px;
+      resize:vertical;
+    }
+
+    button{
+      padding:12px 14px;
+      border:none;
+      border-radius:14px;
+      background:#22c55e;
+      color:#0b0f14;
+      font-weight:700;
+      cursor:pointer;
+      font-size:14px;
+    }
+
+    button:hover{
+      opacity:0.9;
+    }
+
+    .btn2{
+      background:#3b82f6;
+      color:white;
+    }
+
+    .btn3{
+      background:#ef4444;
+      color:white;
+    }
+
+    .progressBox{
+      margin-top:10px;
+      background:#0b1220;
+      border:1px solid #1f2937;
+      border-radius:999px;
+      overflow:hidden;
+      height:18px;
+    }
+
+    .bar{
+      height:100%;
+      width:0%;
+      background:linear-gradient(90deg,#22c55e,#3b82f6);
+      transition:0.3s;
+    }
+
+    .small{
+      opacity:0.7;
+      font-size:12px;
+    }
+
+    .topRow{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      flex-wrap:wrap;
+      justify-content:space-between;
+    }
+
+    .dayTitle{
+      font-size:16px;
+      font-weight:800;
+    }
+
+    .footerBtns{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:10px;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>🚴‍♂️ 100 Days Delivery Challenge (Localhost)</h1>
+  </header>
+
+  <div class="container">
+    <div class="grid">
+
+      <!-- DASHBOARD -->
+      <div class="card">
+        <div class="topRow">
+          <div>
+            <div class="dayTitle">📊 Dashboard</div>
+            <div class="small">Target: ₹60,000 (Editable)</div>
+          </div>
+        </div>
+
+        <label>🎯 Target Amount (₹)</label>
+        <input type="number" id="targetAmount" value="60000" />
+
+        <div style="height:14px"></div>
+
+        <div class="row">
+          <div class="stat">
+            <h3>Total Earnings</h3>
+            <p id="totalEarn">₹0</p>
+          </div>
+
+          <div class="stat">
+            <h3>Total Petrol</h3>
+            <p id="totalPetrol">₹0</p>
+          </div>
+
+          <div class="stat">
+            <h3>Total Other</h3>
+            <p id="totalOther">₹0</p>
+          </div>
+
+          <div class="stat">
+            <h3>Net Profit</h3>
+            <p id="netProfit">₹0</p>
+          </div>
+        </div>
+
+        <div style="height:14px"></div>
+
+        <div class="row">
+          <div class="stat">
+            <h3>Completed</h3>
+            <p id="completed">₹0</p>
+          </div>
+
+          <div class="stat">
+            <h3>Remaining</h3>
+            <p id="remaining">₹0</p>
+          </div>
+
+          <div class="stat">
+            <h3>Progress</h3>
+            <p id="progressText">0%</p>
+          </div>
+        </div>
+
+        <div class="progressBox">
+          <div class="bar" id="progressBar"></div>
+        </div>
+
+        <div class="footerBtns">
+          <button class="btn2" onclick="exportData()">⬇ Export Backup</button>
+          <button class="btn3" onclick="resetAll()">🗑 Reset All</button>
+        </div>
+
+        <p class="small" style="margin-top:12px;">
+          ✅ Data save aagum (LocalStorage). Browser clear pannina data poidum.
+        </p>
+      </div>
+
+
+      <!-- DAILY NOTE -->
+      <div class="card">
+        <div class="topRow">
+          <div>
+            <div class="dayTitle">📝 Daily Note</div>
+            <div class="small">Day 1 to Day 100</div>
+          </div>
+
+          <div style="min-width:160px;">
+            <select id="daySelect"></select>
+          </div>
+        </div>
+
+        <div style="height:12px"></div>
+
+        <label>💰 Earnings (₹)</label>
+        <input type="number" id="earnings" placeholder="ex: 800"/>
+
+        <div style="height:10px"></div>
+
+        <label>⛽ Petrol Expense (₹)</label>
+        <input type="number" id="petrol" placeholder="ex: 150"/>
+
+        <div style="height:10px"></div>
+
+        <label>🧾 Other Expense (₹)</label>
+        <input type="number" id="other" placeholder="ex: 50"/>
+
+        <div style="height:10px"></div>
+
+        <label>📌 Notes</label>
+        <textarea id="notes" placeholder="ex: Today rain, more orders, etc..."></textarea>
+
+        <div class="footerBtns">
+          <button onclick="saveDay()">💾 Save Day</button>
+          <button class="btn2" onclick="loadDay()">🔄 Load</button>
+        </div>
+
+        <p class="small" id="savedMsg" style="margin-top:10px;"></p>
+      </div>
+
+    </div>
+  </div>
+
+
+<script>
+  // -----------------------
+  // BASIC SETUP
+  // -----------------------
+  const daySelect = document.getElementById("daySelect");
+
+  for(let i=1;i<=100;i++){
+    const opt = document.createElement("option");
+    opt.value = i;
+    opt.textContent = "Day " + i;
+    daySelect.appendChild(opt);
+  }
+
+  // Load target from storage
+  const targetInput = document.getElementById("targetAmount");
+  targetInput.value = localStorage.getItem("targetAmount") || 60000;
+
+  targetInput.addEventListener("input", ()=>{
+    localStorage.setItem("targetAmount", targetInput.value);
+    updateDashboard();
+  });
+
+  daySelect.addEventListener("change", loadDay);
+
+  // -----------------------
+  // STORAGE FUNCTIONS
+  // -----------------------
+  function getKey(day){
+    return "day_" + day;
+  }
+
+  function saveDay(){
+    const day = daySelect.value;
+
+    const data = {
+      earnings: Number(document.getElementById("earnings").value || 0),
+      petrol: Number(document.getElementById("petrol").value || 0),
+      other: Number(document.getElementById("other").value || 0),
+      notes: document.getElementById("notes").value || ""
+    };
+
+    localStorage.setItem(getKey(day), JSON.stringify(data));
+
+    document.getElementById("savedMsg").textContent = "✅ Saved for Day " + day;
+    setTimeout(()=> document.getElementById("savedMsg").textContent="", 1500);
+
+    updateDashboard();
+  }
+
+  function loadDay(){
+    const day = daySelect.value;
+    const raw = localStorage.getItem(getKey(day));
+
+    if(raw){
+      const data = JSON.parse(raw);
+      document.getElementById("earnings").value = data.earnings || 0;
+      document.getElementById("petrol").value = data.petrol || 0;
+      document.getElementById("other").value = data.other || 0;
+      document.getElementById("notes").value = data.notes || "";
+      document.getElementById("savedMsg").textContent = "📌 Loaded Day " + day;
+    }else{
+      document.getElementById("earnings").value = "";
+      document.getElementById("petrol").value = "";
+      document.getElementById("other").value = "";
+      document.getElementById("notes").value = "";
+      document.getElementById("savedMsg").textContent = "🆕 No data for Day " + day;
+    }
+
+    setTimeout(()=> document.getElementById("savedMsg").textContent="", 1500);
+  }
+
+  // -----------------------
+  // DASHBOARD CALC
+  // -----------------------
+  function updateDashboard(){
+    let totalEarn = 0;
+    let totalPetrol = 0;
+    let totalOther = 0;
+
+    for(let i=1;i<=100;i++){
+      const raw = localStorage.getItem(getKey(i));
+      if(raw){
+        const d = JSON.parse(raw);
+        totalEarn += Number(d.earnings || 0);
+        totalPetrol += Number(d.petrol || 0);
+        totalOther += Number(d.other || 0);
+      }
+    }
+
+    const netProfit = totalEarn - (totalPetrol + totalOther);
+
+    const target = Number(targetInput.value || 60000);
+    const completed = totalEarn;
+    const remaining = Math.max(target - completed, 0);
+
+    let progress = 0;
+    if(target > 0){
+      progress = Math.min((completed / target) * 100, 100);
+    }
+
+    document.getElementById("totalEarn").textContent = "₹" + totalEarn;
+    document.getElementById("totalPetrol").textContent = "₹" + totalPetrol;
+    document.getElementById("totalOther").textContent = "₹" + totalOther;
+    document.getElementById("netProfit").textContent = "₹" + netProfit;
+
+    document.getElementById("completed").textContent = "₹" + completed;
+    document.getElementById("remaining").textContent = "₹" + remaining;
+    document.getElementById("progressText").textContent = progress.toFixed(1) + "%";
+
+    document.getElementById("progressBar").style.width = progress + "%";
+  }
+
+  // -----------------------
+  // EXPORT + RESET
+  // -----------------------
+  function exportData(){
+    const allData = {
+      targetAmount: localStorage.getItem("targetAmount") || 60000,
+      days: {}
+    };
+
+    for(let i=1;i<=100;i++){
+      const raw = localStorage.getItem(getKey(i));
+      if(raw){
+        allData.days["Day " + i] = JSON.parse(raw);
+      }
+    }
+
+    const blob = new Blob([JSON.stringify(allData, null, 2)], {type:"application/json"});
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "100days_backup.json";
+    a.click();
+
+    URL.revokeObjectURL(url);
+  }
+
+  function resetAll(){
+    const ok = confirm("Are you sure? This will delete ALL 100 days data!");
+    if(!ok) return;
+
+    for(let i=1;i<=100;i++){
+      localStorage.removeItem(getKey(i));
+    }
+    localStorage.removeItem("targetAmount");
+
+    targetInput.value = 60000;
+    daySelect.value = 1;
+
+    loadDay();
+    updateDashboard();
+    alert("✅ Reset done!");
+  }
+
+  // First load
+  daySelect.value = 1;
+  loadDay();
+  updateDashboard();
+</script>
+
+</body>
+</html>
