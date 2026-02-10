@@ -173,7 +173,7 @@
 
 <body>
   <header>
-    <h1>🚴‍♂️ 100 Days Delivery Challenge (Localhost)</h1>
+    <h1>🚴‍♂️ 100 Days Delivery Challenge (Net Profit Progress)</h1>
   </header>
 
   <div class="container">
@@ -184,7 +184,7 @@
         <div class="topRow">
           <div>
             <div class="dayTitle">📊 Dashboard</div>
-            <div class="small">Target: ₹60,000 (Editable)</div>
+            <div class="small">Target: ₹60,000 (Editable) | Progress = Net Profit</div>
           </div>
         </div>
 
@@ -219,7 +219,7 @@
 
         <div class="row">
           <div class="stat">
-            <h3>Completed</h3>
+            <h3>Completed (Net Profit)</h3>
             <p id="completed">₹0</p>
           </div>
 
@@ -366,7 +366,7 @@
   }
 
   // -----------------------
-  // DASHBOARD CALC
+  // DASHBOARD CALC (UPDATED)
   // -----------------------
   function updateDashboard(){
     let totalEarn = 0;
@@ -383,17 +383,24 @@
       }
     }
 
+    // NET PROFIT
     const netProfit = totalEarn - (totalPetrol + totalOther);
 
     const target = Number(targetInput.value || 60000);
-    const completed = totalEarn;
+
+    // ✅ Completed based on NET PROFIT
+    const completed = Math.max(netProfit, 0);
+
+    // Remaining
     const remaining = Math.max(target - completed, 0);
 
+    // Progress %
     let progress = 0;
     if(target > 0){
       progress = Math.min((completed / target) * 100, 100);
     }
 
+    // Update UI
     document.getElementById("totalEarn").textContent = "₹" + totalEarn;
     document.getElementById("totalPetrol").textContent = "₹" + totalPetrol;
     document.getElementById("totalOther").textContent = "₹" + totalOther;
